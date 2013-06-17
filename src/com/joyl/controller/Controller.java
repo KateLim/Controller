@@ -60,6 +60,7 @@ public class Controller {
 			sock.joinGroup(mcAddress);
 
 			System.out.println("Start to find IoT Server...");
+			System.out.println("Start to find IoT Server...");
 			
 			while (!done) { /* loop forever */
 
@@ -96,7 +97,7 @@ public class Controller {
 		Vertx vertx = VertxFactory.newVertx("localhost");
 		
 		vertx.createHttpClient().setPort(iotPort).setHost(iotAddress.getHostAddress())
-				.getNow("/", new Handler<HttpClientResponse>() {
+				.getNow("/nodelist/connected/[nodeID]", new Handler<HttpClientResponse>() {
 					public void handle(HttpClientResponse response) {
 						response.bodyHandler(new Handler<Buffer>() {
 							public void handle(Buffer data) {
