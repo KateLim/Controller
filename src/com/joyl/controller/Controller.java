@@ -11,7 +11,7 @@ import org.vertx.java.core.http.HttpClientResponse;
 import org.vertx.java.core.http.HttpServerRequest;
 
 public class Controller {
-	public static final String IOTSVR_MCAST_ADDRESS = "224.0.0.30";
+	public static final String IOTSVR_MCAST_ADDRESS = "224.0.0.251";
 	public static final int IOTSVR_MCAST_PORT = 50000;
 
 	public static final int MAX_LEN = 1024; /* max receive buffer */
@@ -106,6 +106,5 @@ public class Controller {
 						});
 					}
 				});
-		
 	}
 }
