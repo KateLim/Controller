@@ -10,9 +10,12 @@ import java.awt.event.*;
 import java.net.*;
 import java.io.*;
 import javax.swing.*;
+import java.util.Date;
 public class  UserInterfaceControllerGUI extends JFrame implements ActionListener{
+	//public final String joyMenu = new String("");
 	private JTextArea ta = new JTextArea();
 	private JTextField tf = new JTextField();
+	private JTextArea tn = new JTextArea();
 	private	JScrollPane js = new JScrollPane(ta);
 	private JButton b1=new JButton("Send");
 	private JButton b2=new JButton("Exit");
@@ -20,6 +23,7 @@ public class  UserInterfaceControllerGUI extends JFrame implements ActionListene
 	
 	public int messgaeOK = 0;
 	public String message = new String("");
+	private Date dobj;
 //	private ChatConnection  con;
 	public UserInterfaceControllerGUI(){
 		createGUI();
@@ -28,19 +32,30 @@ public class  UserInterfaceControllerGUI extends JFrame implements ActionListene
 //		con.connect(ip, port, name);
 	}
 	public void createGUI(){
-		p.setLayout(new GridLayout(6,2));
-//		p.add(b1);
-//		p.add(b2);
+		tn.append("[Select Menu]\n");
+		tn.append("1.Get SANode List\n");
+		tn.append("2.Get Connected SANode List\n");
+		tn.append("3.Get Waiting SANode List\n");
+		tn.append("4.Get ConnectedSANodeInfo\n");
+		tn.append("5.Sset Activate SANode\n");//setActivateSANode, //menu 5
+		tn.append("6.Control SANode\n");//controlSANode, //menu 6
+		tn.append("7.Get Log\n");//getLog, //menu 7
+		tn.append("8.Exit");//goStop //menu 8		
+		p.add(tn);
+		p.setLayout(new GridLayout(1,1));
+		
+		//p.add(b2);
 		ta.setFocusable(false);
+		tn.setFocusable(false);
 //		js.setPreferredSize(new java.awt.Dimension(300, 300));		
 
 		js.setVerticalScrollBarPolicy(
 		ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
 		getContentPane().add(js);
 		getContentPane().add( tf, "South");
-		getContentPane().add( p, "East");
+		getContentPane().add(p, "East");
 //		getContentPane().add(ta,"Center");
-		setBounds( 200,200,600,400 );
+		setBounds( 200,200,700,400 );
 		setVisible( true );
 		tf.requestFocus();
 		
@@ -77,31 +92,32 @@ public class  UserInterfaceControllerGUI extends JFrame implements ActionListene
 //	public UserInterfaceController() {};
 	
 	public Integer displayMainMenuGUI() throws IOException {
-		java.io.InputStreamReader isr = new java.io.InputStreamReader(System.in);
-		java.io.BufferedReader in = new java.io.BufferedReader(isr);
-		
+//		java.io.InputStreamReader isr = new java.io.InputStreamReader(System.in);
+//		java.io.BufferedReader in = new java.io.BufferedReader(isr);
+//		
 		StringBuffer msg = new StringBuffer("");
-		message = null; 
-		msg.append("\n==============================\n");
-		msg.append("1. Get SANode List\n");//getSANodeList,//menu 1
-		msg.append("2. Get Connected SANode List\n");//getConnectedSANodeList,//menu 2
-		msg.append("3. Get Waiting SANode List\n");//getWaitingSANodeList, //menu 3
-		msg.append("4. Get ConnectedSANodeInfo\n");//getConnectedSANodeInfo, //menu 4
-		msg.append("5. Sset Activate SANode\n");//setActivateSANode, //menu 5
-		msg.append("6. Control SANode\n");//controlSANode, //menu 6
-		msg.append("7. Get Log\n");//getLog, //menu 7
-		msg.append("8. Exit\n");//goStop //menu 8
-		msg.append("==============================\n");
-		msg.append("Select Number : ");
-		
-		display(msg.toString());
-		//String selectNumber = new String(message);
-//		String selectNumber = new String(in.readLine());
+//		message = null; 
+//		msg.append("\n==============================\n");
+//		msg.append("1. Get SANode List\n");//getSANodeList,//menu 1
+//		msg.append("2. Get Connected SANode List\n");//getConnectedSANodeList,//menu 2
+//		msg.append("3. Get Waiting SANode List\n");//getWaitingSANodeList, //menu 3
+//		msg.append("4. Get ConnectedSANodeInfo\n");//getConnectedSANodeInfo, //menu 4
+//		msg.append("5. Sset Activate SANode\n");//setActivateSANode, //menu 5
+//		msg.append("6. Control SANode\n");//controlSANode, //menu 6
+//		msg.append("7. Get Log\n");//getLog, //menu 7
+//		msg.append("8. Exit\n");//goStop //menu 8
+//		msg.append("==============================\n");
+//		msg.append("Select Number : ");
+//		
+//		display(msg.toString());
+//		//String selectNumber = new String(message);
+////		String selectNumber = new String(in.readLine());
+		message = null;
 		while(message == null)
 		{
 			;
 		}
-		msg = new StringBuffer("");;
+		//msg = new StringBuffer("");;
 		msg.append("Your selection : "+message);
 		display(msg.toString());
 		System.out.println("IGot...:"+message);
@@ -342,7 +358,12 @@ public class  UserInterfaceControllerGUI extends JFrame implements ActionListene
 		{
 			Iterator<Object> iterator = logList.iterator();
 			while (iterator.hasNext()) {
-				msg.append(iterator.next()+"\n");
+				Object obj = iterator.next();
+				JsonObject jobj = new JsonObject(obj.toString());
+				long timestamp = jobj.getLong("time");
+				Date dd = new Date(timestamp);
+				jobj.putString("time", dd.toString());
+				msg.append(jobj.toString()+"\n");
 			}
 		}
 		display(msg.toString());
