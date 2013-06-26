@@ -60,6 +60,7 @@ public class Controller {
 			sock.joinGroup(mcAddress);
 
 			System.out.println("Start to find IoT Server...");
+			System.out.println("Start to find IoT Server...");
 			
 			while (!done) { /* loop forever */
 
